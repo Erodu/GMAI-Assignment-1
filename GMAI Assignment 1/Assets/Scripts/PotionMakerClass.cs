@@ -16,6 +16,9 @@ public class PotionMakerClass : MonoBehaviour
     public PotionMakerStates m_Approached { get; set; } = null;
     public PotionMakerStates m_Attending { get; set; } = null;
     public PotionMakerStates m_Current { get; set; } = null;
+
+    /*------- OTHER VARIABLES FROM HERE -------*/
+    public GameObject btn_Approach;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,12 +31,20 @@ public class PotionMakerClass : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        m_Current.Execute();
     }
 
-    public void ExecuteOnClick()
+    public void ApproachOnClick()
     {
-        // Filling this in for now.
+        // Activate the ApproachPotionMaker() function in the Idle State script.
+        if (m_Current != null)
+        {
+            // Though first, let's make sure to check if the current state is the Idle state.
+            if (m_Current.GetType() == typeof(IdleState))
+            {
+                ((IdleState)m_Current).ApproachPotionMaker();
+            }
+        }
     }
 
     public void ChangeState(PotionMakerStates nextState)
