@@ -8,7 +8,7 @@ public class PotionMakerClass : MonoBehaviour
     public PotionMakerStates m_Idle { get; set; } = null;
     public PotionMakerStates m_Brewing { get; set; } = null;
     public PotionMakerStates m_Requesting { get; set; } = null;
-    public PotionMakerStates m_Researching { get; set; } = null;
+    public PotionMakerStates m_Studying { get; set; } = null;
     public PotionMakerStates m_CheckComponents { get; set; } = null;
     public PotionMakerStates m_Transaction { get; set; } = null;
     public PotionMakerStates m_PotionInquiry { get; set; } = null;
@@ -23,6 +23,11 @@ public class PotionMakerClass : MonoBehaviour
     public GameObject btn_Talk; // For Approach -> Attending
     public GameObject btn_Inquire; // For Attending -> Potion Inquiry
     public GameObject btn_Leave; // For Attending -> Idle
+    public GameObject btn_Healing; // For Potion Inquiry -> Transaction
+    public GameObject btn_Pay; // For Transaction -> Attending
+
+    /*------- v OTHER VARIABLES v -------*/
+    public bool inOneSession; // This variable is mainly for Transaction -> Attending, so that the potion maker asks something different if the player doesn't leave.
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +36,7 @@ public class PotionMakerClass : MonoBehaviour
         m_Idle = new IdleState(this);
         m_Current = m_Idle;
         m_Current.Enter();
+        inOneSession = false;
     }
 
     // Update is called once per frame
@@ -82,6 +88,28 @@ public class PotionMakerClass : MonoBehaviour
             if (m_Current.GetType() == typeof(AttendingState))
             {
                 ((AttendingState)m_Current).LeaveShop();
+            }
+        }
+    }
+
+    public void HealingOnClick()
+    {
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(PotionInquiryState))
+            {
+                ((PotionInquiryState)m_Current).ChooseHealingPotion();
+            }
+        }
+    }
+
+    public void PayOnClick()
+    {
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(TransactionState))
+            {
+                ((TransactionState)m_Current).PayForPotion();
             }
         }
     }

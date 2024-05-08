@@ -13,9 +13,19 @@ public class AttendingState : PotionMakerStates
 
     public override void Enter()
     {
-        Debug.Log("'Hello! Welcome to The Kobold's Beaker, how may I help you?' The potion maker chirps.");
-        m_PotionMaker.btn_Inquire.SetActive(true);
-        m_PotionMaker.btn_Leave.SetActive(true);
+        // Respond with the first Debug.Log here if the player has already gone through this and is coming to this state from the Transaction state.
+        if (m_PotionMaker.inOneSession == true)
+        {
+            Debug.Log("'Anything else I can do for you?' The potion maker politely asks.");
+            m_PotionMaker.btn_Inquire.SetActive(true);
+            m_PotionMaker.btn_Leave.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("'Hello! Welcome to The Kobold's Beaker, how may I help you?' The potion maker chirps.");
+            m_PotionMaker.btn_Inquire.SetActive(true);
+            m_PotionMaker.btn_Leave.SetActive(true);
+        }
     }
 
     public override void Execute()
@@ -25,7 +35,7 @@ public class AttendingState : PotionMakerStates
         {
             m_PotionMaker.btn_Inquire.SetActive(false);
             m_PotionMaker.btn_Leave.SetActive(false);
-            // Yeye
+            m_PotionMaker.ChangeState(new PotionInquiryState(m_PotionMaker));
         }
     }
 
@@ -51,6 +61,7 @@ public class AttendingState : PotionMakerStates
     {
         m_PotionMaker.btn_Inquire.SetActive(false);
         m_PotionMaker.btn_Leave.SetActive(false);
+        m_PotionMaker.inOneSession = false;
         m_PotionMaker.ChangeState(new IdleState(m_PotionMaker));
     }
 }
