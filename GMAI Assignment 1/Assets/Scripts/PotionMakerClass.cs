@@ -21,6 +21,8 @@ public class PotionMakerClass : MonoBehaviour
     /*------- v BUTTONS v -------*/
     public GameObject btn_Approach; // For Idle -> Approach
     public GameObject btn_Talk; // For Approach -> Attending
+    public GameObject btn_Inquire; // For Attending -> Potion Inquiry
+    public GameObject btn_Leave; // For Attending -> Idle
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +60,28 @@ public class PotionMakerClass : MonoBehaviour
             if (m_Current.GetType() == typeof(ApproachedState))
             {
                 ((ApproachedState)m_Current).TalkToPotionMaker();
+            }
+        }
+    }
+
+    public void InquireOnClick()
+    {
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(AttendingState))
+            {
+                ((AttendingState)m_Current).Inquired();
+            }
+        }
+    }
+
+    public void LeaveOnClick()
+    {
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(AttendingState))
+            {
+                ((AttendingState)m_Current).LeaveShop();
             }
         }
     }
