@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PotionMakerClass : MonoBehaviour
 {
+    /*------- v STATES v -------*/
     public PotionMakerStates m_Idle { get; set; } = null;
     public PotionMakerStates m_Brewing { get; set; } = null;
     public PotionMakerStates m_Requesting { get; set; } = null;
@@ -17,8 +18,10 @@ public class PotionMakerClass : MonoBehaviour
     public PotionMakerStates m_Attending { get; set; } = null;
     public PotionMakerStates m_Current { get; set; } = null;
 
-    /*------- OTHER VARIABLES FROM HERE -------*/
-    public GameObject btn_Approach;
+    /*------- v BUTTONS v -------*/
+    public GameObject btn_Approach; // For Idle -> Approach
+    public GameObject btn_Talk; // For Approach -> Attending
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +46,18 @@ public class PotionMakerClass : MonoBehaviour
             if (m_Current.GetType() == typeof(IdleState))
             {
                 ((IdleState)m_Current).ApproachPotionMaker();
+            }
+        }
+    }
+
+    public void TalkOnClick()
+    {
+        // Following the logic for ApproachOnClick().
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(ApproachedState))
+            {
+                ((ApproachedState)m_Current).TalkToPotionMaker();
             }
         }
     }

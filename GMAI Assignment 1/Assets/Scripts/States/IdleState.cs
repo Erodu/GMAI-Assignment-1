@@ -14,6 +14,7 @@ public class IdleState : PotionMakerStates
     public override void Enter()
     {
         Debug.Log("The Kobold's Beaker is ready for business!");
+        // Enable the button for Approach.
         m_PotionMaker.btn_Approach.SetActive(true);
     }
 
@@ -21,8 +22,9 @@ public class IdleState : PotionMakerStates
     {
         if (isBeingApproached == true)
         {
-            // If the Potion Maker is being approached, transition to the Approached state.
-            Debug.Log("Set to true!");
+            // If the Potion Maker is being approached, disable the Approach button and transition to the Approached state.
+            m_PotionMaker.btn_Approach.SetActive(false);
+            m_PotionMaker.ChangeState(new ApproachedState(m_PotionMaker));
         }
         else
         {
