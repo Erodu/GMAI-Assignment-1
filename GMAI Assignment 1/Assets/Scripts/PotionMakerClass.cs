@@ -24,6 +24,7 @@ public class PotionMakerClass : MonoBehaviour
     public GameObject btn_Inquire; // For Attending -> Potion Inquiry
     public GameObject btn_Leave; // For Attending -> Idle
     public GameObject btn_Healing; // For Potion Inquiry -> Transaction
+    public GameObject btn_Arcane; // For Potion Inquiry -> Studying
     public GameObject btn_Pay; // For Transaction -> Attending
 
     /*------- v OTHER VARIABLES v -------*/
@@ -45,6 +46,10 @@ public class PotionMakerClass : MonoBehaviour
         m_Current.Execute();
     }
 
+    // The following OnClick functions (like ApproachOnClick, TalkOnClick and InquireOnClick) are all here
+    // so that we can call them from our buttons' OnClick functions from Unity.
+    // We can't normally just call the functions that are called within these OnClicks since they are stored inside
+    // the state scripts themselves, and PotionMakerStates and its subclasses are not attached to any GameObject.
     public void ApproachOnClick()
     {
         // Activate the ApproachPotionMaker() function in the Idle State script.
@@ -99,6 +104,17 @@ public class PotionMakerClass : MonoBehaviour
             if (m_Current.GetType() == typeof(PotionInquiryState))
             {
                 ((PotionInquiryState)m_Current).ChooseHealingPotion();
+            }
+        }
+    }
+
+    public void ArcaneOnClick()
+    {
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(PotionInquiryState))
+            {
+                ((PotionInquiryState)m_Current).ChooseArcanePotion();
             }
         }
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class PotionInquiryState : PotionMakerStates
 {
     bool choseHealing = false;
+    bool choseArcane = false;
     public PotionInquiryState(PotionMakerClass potionMaker)
     {
         // m_PotionMaker comes from PotionMakerStates.
@@ -13,12 +14,13 @@ public class PotionInquiryState : PotionMakerStates
 
     public override void Enter()
     {
-        Debug.Log("[EXPAND FOR FULL TEXT] I have about three potions for today, but only two types are readily available.\n" +
-            "First off, there's our healing potions, which are prepared already and have a flat fee of 10 gold pieces each!\n" +
-            "Then we have a rather new one! A Potion of Arcane Excellence. But since it's new, I'd have to check if I actually have the components, and refresh myself on how to make it.\n" +
-            "The third one... Well, I know for sure I'm missing something for that one.");
+        Debug.Log("[EXPAND FOR FULL TEXT] 'I have about three potions for today, but only two types are readily available.'\n" +
+            "'First off, there's our healing potions, which are prepared already and have a flat fee of 10 gold pieces each!'\n" +
+            "'Then we have a rather new one! A Potion of Arcane Excellence. But since it's new, I'd have to check if I actually have the components, and refresh myself on how to make it.'\n" +
+            "'The third one... Well, I know for sure I'm missing something for that one.'");
 
         m_PotionMaker.btn_Healing.SetActive(true);
+        m_PotionMaker.btn_Arcane.SetActive(true);
     }
 
     public override void Execute()
@@ -26,7 +28,14 @@ public class PotionInquiryState : PotionMakerStates
         if (choseHealing == true)
         {
             m_PotionMaker.btn_Healing.SetActive(false);
+            m_PotionMaker.btn_Arcane.SetActive(false);
             m_PotionMaker.ChangeState(new TransactionState(m_PotionMaker));
+        }
+        else if (choseArcane == true)
+        {
+            m_PotionMaker.btn_Healing.SetActive(false);
+            m_PotionMaker.btn_Arcane.SetActive(false);
+            m_PotionMaker.ChangeState(new StudyingState(m_PotionMaker));
         }
     }
 
@@ -36,10 +45,19 @@ public class PotionInquiryState : PotionMakerStates
         {
             Debug.Log("You chose the healing potion.");
         }
+        else if (choseArcane == true)
+        {
+            Debug.Log("You chose the Potion of Arcane Excellence.");
+        }
     }
 
     public void ChooseHealingPotion()
     {
         choseHealing = true;
+    }
+
+    public void ChooseArcanePotion()
+    {
+        choseArcane = true;
     }
 }
