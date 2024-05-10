@@ -6,6 +6,7 @@ public class PotionInquiryState : PotionMakerStates
 {
     bool choseHealing = false;
     bool choseArcane = false;
+    bool choseThird = false;
     public PotionInquiryState(PotionMakerClass potionMaker)
     {
         // m_PotionMaker comes from PotionMakerStates.
@@ -21,6 +22,7 @@ public class PotionInquiryState : PotionMakerStates
 
         m_PotionMaker.btn_Healing.SetActive(true);
         m_PotionMaker.btn_Arcane.SetActive(true);
+        m_PotionMaker.btn_ThirdPotion.SetActive(true);
     }
 
     public override void Execute()
@@ -29,13 +31,22 @@ public class PotionInquiryState : PotionMakerStates
         {
             m_PotionMaker.btn_Healing.SetActive(false);
             m_PotionMaker.btn_Arcane.SetActive(false);
+            m_PotionMaker.btn_ThirdPotion.SetActive(false);
             m_PotionMaker.ChangeState(new TransactionState(m_PotionMaker));
         }
         else if (choseArcane == true)
         {
             m_PotionMaker.btn_Healing.SetActive(false);
             m_PotionMaker.btn_Arcane.SetActive(false);
+            m_PotionMaker.btn_ThirdPotion.SetActive(false);
             m_PotionMaker.ChangeState(new StudyingState(m_PotionMaker));
+        }
+        else if (choseThird == true)
+        {
+            m_PotionMaker.btn_Healing.SetActive(false);
+            m_PotionMaker.btn_Arcane.SetActive(false);
+            m_PotionMaker.btn_ThirdPotion.SetActive(false);
+            m_PotionMaker.ChangeState(new RequestingState(m_PotionMaker));
         }
     }
 
@@ -49,6 +60,10 @@ public class PotionInquiryState : PotionMakerStates
         {
             Debug.Log("You chose the Potion of Arcane Excellence.");
         }
+        else if (choseThird == true)
+        {
+            Debug.Log("You chose to inquire further about the third potion.");
+        }
     }
 
     public void ChooseHealingPotion()
@@ -59,5 +74,10 @@ public class PotionInquiryState : PotionMakerStates
     public void ChooseArcanePotion()
     {
         choseArcane = true;
+    }
+
+    public void ChooseThirdPotion()
+    {
+        choseThird = true;
     }
 }

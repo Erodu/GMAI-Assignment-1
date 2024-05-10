@@ -57,7 +57,7 @@ public class BrewingState : PotionMakerStates
             m_PotionMaker.timerText.text = "Time left for brewing: " + timer.ToString("0.0");
             yield return null;
         }
-        // After the timer is done, change state to Check Component State.
+        // After the timer is done, we roll for success.
         if (timer <= 0)
         {
             m_PotionMaker.timerText.gameObject.SetActive(false); // Disable the timer text.
@@ -69,10 +69,15 @@ public class BrewingState : PotionMakerStates
     {
         // Random check to see if the brewing process is successful or not. Getting anything more than 2 is a success, but otherwise triggers a failstate.
         int brewCheck = Random.Range(0, 11);
-        
-        if (brewCheck > 2f)
+        // We want to guarantee success if the player is brewing the third option, so...
+        if (brewCheck > 2f || m_PotionMaker.isThirdPotion == true)
         {
             brewSuccessful = true;
+            if (m_PotionMaker.isThirdPotion == true)
+            {
+                // Make sure that the isThirdPotion bool does not remain true for the rest of this bot's runtime.
+                m_PotionMaker.isThirdPotion = false;
+            }
         }
         else
         {

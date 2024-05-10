@@ -28,13 +28,19 @@ public class PotionMakerClass : MonoBehaviour
     public GameObject btn_Leave; // For Attending -> Idle
     public GameObject btn_Healing; // For Potion Inquiry -> Transaction
     public GameObject btn_Arcane; // For Potion Inquiry -> Studying
+    public GameObject btn_ThirdPotion; // For Potion Inquiry -> Requesting
+    public GameObject btn_Give; // For Requesting -> Brewing
+    public GameObject btn_NoGive; // For Requesting -> Attending
     public GameObject btn_Proceed; // For Check Components -> Brewing
+    public GameObject btn_Continue; // For Failed -> Brewing
+    public GameObject btn_Abandon; // For Failed -> Attending
     public GameObject btn_Back; // For Check Components -> Attending
     public GameObject btn_Pay; // For Transaction -> Attending
 
     /*------- v OTHER VARIABLES v -------*/
     public bool inOneSession; // This variable is mainly for Transaction -> Attending, so that the potion maker asks something different if the player doesn't leave.
     public TextMeshProUGUI timerText; // This will be to give the player visual feedback during waiting functions of certain states.
+    public bool isThirdPotion; // Specifically so there's no failure for the third potion during the Brewing State, since the potion maker is very familiar with it.
     public bool dirty; // This will be true if the potion maker was in the Brewing State at any point, and the player leaves.
 
     // Start is called before the first frame update
@@ -45,6 +51,7 @@ public class PotionMakerClass : MonoBehaviour
         m_Current = m_Idle;
         m_Current.Enter();
         inOneSession = false;
+        isThirdPotion = false;
         dirty = false;
     }
 
@@ -123,6 +130,61 @@ public class PotionMakerClass : MonoBehaviour
             if (m_Current.GetType() == typeof(PotionInquiryState))
             {
                 ((PotionInquiryState)m_Current).ChooseArcanePotion();
+            }
+        }
+    }
+
+    public void ThirdOnClick()
+    {
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(PotionInquiryState))
+            {
+                ((PotionInquiryState)m_Current).ChooseThirdPotion();
+            }
+        }
+    }
+
+    public void GiveOnClick()
+    {
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(RequestingState))
+            {
+                ((RequestingState)m_Current).GiveWyvernSpike();
+            }
+        }
+    }
+
+    public void NoGiveOnClick()
+    {
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(RequestingState))
+            {
+                ((RequestingState)m_Current).DoNotGiveSpike();
+            }
+        }
+    }
+
+    public void ContinueOnClick()
+    {
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(FailedState))
+            {
+                ((FailedState)m_Current).ContinueBrewing();
+            }
+        }
+    }
+
+    public void AbandonOnClick()
+    {
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(FailedState))
+            {
+                ((FailedState)m_Current).AbandonBrewing();
             }
         }
     }
