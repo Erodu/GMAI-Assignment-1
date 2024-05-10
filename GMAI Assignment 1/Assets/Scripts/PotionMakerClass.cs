@@ -30,13 +30,12 @@ public class PotionMakerClass : MonoBehaviour
     public GameObject btn_Arcane; // For Potion Inquiry -> Studying
     public GameObject btn_Proceed; // For Check Components -> Brewing
     public GameObject btn_Back; // For Check Components -> Attending
-    public GameObject btn_Continue; // For repeating Brewing State after failure.
-    public GameObject btn_Abandon; // For Brewing -> Attending
     public GameObject btn_Pay; // For Transaction -> Attending
 
     /*------- v OTHER VARIABLES v -------*/
     public bool inOneSession; // This variable is mainly for Transaction -> Attending, so that the potion maker asks something different if the player doesn't leave.
     public TextMeshProUGUI timerText; // This will be to give the player visual feedback during waiting functions of certain states.
+    public bool dirty; // This will be true if the potion maker was in the Brewing State at any point, and the player leaves.
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +45,7 @@ public class PotionMakerClass : MonoBehaviour
         m_Current = m_Idle;
         m_Current.Enter();
         inOneSession = false;
+        dirty = false;
     }
 
     // Update is called once per frame

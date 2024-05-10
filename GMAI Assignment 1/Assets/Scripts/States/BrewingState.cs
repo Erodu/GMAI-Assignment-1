@@ -6,7 +6,6 @@ public class BrewingState : PotionMakerStates
 {
     bool brewFailed = false;
     bool brewSuccessful = false;
-    bool choseToAbandon = false;
     public BrewingState(PotionMakerClass potionMaker)
     {
         // m_PotionMaker comes from PotionMakerStates.
@@ -18,24 +17,31 @@ public class BrewingState : PotionMakerStates
         Debug.Log("'Alright then! Wait here while I do my magic!' The potion maker begins her careful process.");
         m_PotionMaker.timerText.gameObject.SetActive(true);
         m_PotionMaker.StartCoroutine(BrewingTimer(10f));
+        m_PotionMaker.dirty = true;
     }
 
     public override void Execute()
     {
         if (brewSuccessful == true)
         {
-            // Logic
+            m_PotionMaker.ChangeState(new TransactionState(m_PotionMaker));
         }
         else if (brewFailed == true)
         {
-            brewFailed = false; // Stop from potentially repeating.
-            Debug.Log("'Ack! Something went wrong... I'll need to restart, do you want to keep going or just end it?'");
+            // Logic
         }
     }
 
     public override void Exit()
     {
-        throw new System.NotImplementedException();
+        if (brewSuccessful == true)
+        {
+            Debug.Log("The brewing process is successful!");
+        }
+        else if (brewFailed == true)
+        {
+            Debug.Log("The brewing process was unsuccessful.");
+        }
     }
 
     private IEnumerator BrewingTimer(float duration)
@@ -63,6 +69,7 @@ public class BrewingState : PotionMakerStates
     {
         // Random check to see if the brewing process is successful or not. Getting anything more than 2 is a success, but otherwise triggers a failstate.
         int brewCheck = Random.Range(0, 11);
+        
         if (brewCheck > 2f)
         {
             brewSuccessful = true;

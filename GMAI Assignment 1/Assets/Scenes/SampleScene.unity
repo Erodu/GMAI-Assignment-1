@@ -3057,6 +3057,8 @@ MonoBehaviour:
   btn_Arcane: {fileID: 1341114595}
   btn_Proceed: {fileID: 950269547}
   btn_Back: {fileID: 1316671796}
+  btn_Continue: {fileID: 0}
+  btn_Abandon: {fileID: 0}
   btn_Pay: {fileID: 484513523}
   inOneSession: 0
   timerText: {fileID: 490012237}

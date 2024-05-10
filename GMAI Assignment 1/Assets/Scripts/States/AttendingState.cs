@@ -62,6 +62,13 @@ public class AttendingState : PotionMakerStates
         m_PotionMaker.btn_Inquire.SetActive(false);
         m_PotionMaker.btn_Leave.SetActive(false);
         m_PotionMaker.inOneSession = false;
-        m_PotionMaker.ChangeState(new IdleState(m_PotionMaker));
+        if (m_PotionMaker.dirty == true)
+        {
+            m_PotionMaker.ChangeState(new CleaningState(m_PotionMaker));
+        }
+        else
+        {
+            m_PotionMaker.ChangeState(new IdleState(m_PotionMaker));
+        }
     }
 }

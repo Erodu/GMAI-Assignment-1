@@ -29,6 +29,7 @@ public class CheckComponentsState : PotionMakerStates
         {
             m_PotionMaker.btn_Proceed.SetActive(false);
             m_PotionMaker.btn_Back.SetActive(false);
+            m_PotionMaker.ChangeState(new BrewingState(m_PotionMaker));
         }
         else if (choseBack == true)
         {
