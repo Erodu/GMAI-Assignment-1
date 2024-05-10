@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PotionMakerClass : MonoBehaviour
 {
@@ -19,16 +21,22 @@ public class PotionMakerClass : MonoBehaviour
     public PotionMakerStates m_Current { get; set; } = null;
 
     /*------- v BUTTONS v -------*/
+    // All buttons here are meant to be disabled within the scene by default.
     public GameObject btn_Approach; // For Idle -> Approach
     public GameObject btn_Talk; // For Approach -> Attending
     public GameObject btn_Inquire; // For Attending -> Potion Inquiry
     public GameObject btn_Leave; // For Attending -> Idle
     public GameObject btn_Healing; // For Potion Inquiry -> Transaction
     public GameObject btn_Arcane; // For Potion Inquiry -> Studying
+    public GameObject btn_Proceed; // For Check Components -> Brewing
+    public GameObject btn_Back; // For Check Components -> Attending
+    public GameObject btn_Continue; // For repeating Brewing State after failure.
+    public GameObject btn_Abandon; // For Brewing -> Attending
     public GameObject btn_Pay; // For Transaction -> Attending
 
     /*------- v OTHER VARIABLES v -------*/
     public bool inOneSession; // This variable is mainly for Transaction -> Attending, so that the potion maker asks something different if the player doesn't leave.
+    public TextMeshProUGUI timerText; // This will be to give the player visual feedback during waiting functions of certain states.
 
     // Start is called before the first frame update
     void Start()
@@ -115,6 +123,28 @@ public class PotionMakerClass : MonoBehaviour
             if (m_Current.GetType() == typeof(PotionInquiryState))
             {
                 ((PotionInquiryState)m_Current).ChooseArcanePotion();
+            }
+        }
+    }
+
+    public void ProceedOnClick()
+    {
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(CheckComponentsState))
+            {
+                ((CheckComponentsState)m_Current).ChooseProceedOption();
+            }
+        }
+    }
+
+    public void BackOnClick()
+    {
+        if (m_Current != null)
+        {
+            if (m_Current.GetType() == typeof(CheckComponentsState))
+            {
+                ((CheckComponentsState)m_Current).ChooseBackOption();
             }
         }
     }

@@ -13,6 +13,7 @@ public class StudyingState : PotionMakerStates
     public override void Enter()
     {
         Debug.Log("'Okay! Let me go research it first.' The potion maker walks off to her study station, where she looks over her notes. 'I'll need just a few seconds.'");
+        m_PotionMaker.timerText.gameObject.SetActive(true);
         m_PotionMaker.StartCoroutine(StudyTimer(5f));
     }
 
@@ -37,10 +38,13 @@ public class StudyingState : PotionMakerStates
             timer -= Time.deltaTime;
 
             // To give the player feedback, we put out the time left. "0.0" rounds the result to one decimal's place.
-            Debug.Log("Time left for study: " + timer.ToString("0.0"));
+            m_PotionMaker.timerText.text = "Time left for study: " + timer.ToString("0.0");
             yield return null;
         }
-
         // After the timer is done, change state to Check Component State.
+        if (timer <= 0)
+        {
+            m_PotionMaker.ChangeState(new CheckComponentsState(m_PotionMaker));
+        }
     }
 }
