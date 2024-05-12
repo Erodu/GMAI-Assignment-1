@@ -28,7 +28,7 @@ public class BrewingState : PotionMakerStates
         }
         else if (brewFailed == true)
         {
-            // Logic
+            m_PotionMaker.ChangeState(new FailedState(m_PotionMaker));
         }
     }
 
@@ -61,7 +61,16 @@ public class BrewingState : PotionMakerStates
         if (timer <= 0)
         {
             m_PotionMaker.timerText.gameObject.SetActive(false); // Disable the timer text.
-            DecideSuccess();
+            if (m_PotionMaker.isThirdPotion == true)
+            {
+                brewSuccessful = true; // Automatically set it to true if the player is making the third potion.
+                // Make sure that the isThirdPotion bool does not remain true for the rest of this bot's runtime.
+                m_PotionMaker.isThirdPotion = false;
+            }
+            else
+            {
+                DecideSuccess();
+            }
         }
     }
 
@@ -69,15 +78,10 @@ public class BrewingState : PotionMakerStates
     {
         // Random check to see if the brewing process is successful or not. Getting anything more than 2 is a success, but otherwise triggers a failstate.
         int brewCheck = Random.Range(0, 11);
-        // We want to guarantee success if the player is brewing the third option, so...
-        if (brewCheck > 2f || m_PotionMaker.isThirdPotion == true)
+
+        if (brewCheck > 2f)
         {
             brewSuccessful = true;
-            if (m_PotionMaker.isThirdPotion == true)
-            {
-                // Make sure that the isThirdPotion bool does not remain true for the rest of this bot's runtime.
-                m_PotionMaker.isThirdPotion = false;
-            }
         }
         else
         {
